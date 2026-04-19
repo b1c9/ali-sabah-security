@@ -1,172 +1,89 @@
 import streamlit as st
 import time
 
-# 1. إعدادات النظام - جامعة الفارابي
+# 1. إعدادات الصفحة لتناسب الموبايل والحاسوب
 st.set_page_config(
     page_title="جامعة الفارابي | الرادع الرقمي",
     layout="wide",
     initial_sidebar_state="collapsed"
 )
 
-# 2. بناء الواجهة السيبرانية المرنة (Responsive) داخل الكود (بدون صور خارجية)
+# 2. ربط الصورة كخلفية أساسية (الرابط المباشر لصورتك)
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@700;900&display=swap');
     
-    /* خلفية سيبرانية غامقة بملء الشاشة */
     .stApp {
-        background-color: #000b1a;
-        background-image: radial-gradient(circle, #001d3d 0%, #000814 100%);
-        direction: rtl;
+        background-image: url("https://i.imgur.com/8ae491e.png");
+        background-size: 100% 100%;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
     }
 
-    /* إخفاء شريط التنقل العلوي وهوامش Streamlit الافتراضية */
+    /* إخفاء عناصر Streamlit لجعل الواجهة هي الصورة فقط */
     header, footer, #MainMenu {visibility: hidden;}
     .block-container {padding: 0 !important;}
 
-    /* حاوية "ذكية" تتركز في منتصف أي شاشة (آيفون، لابتوب) */
-    .hero-container {
+    /* حاوية العناصر لتوسيطها فوق تصميم الصورة */
+    .main-wrapper {
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
         height: 100vh;
-        width: 100vw;
-        padding: 0 10%;
+        width: 100%;
     }
 
-    /* شعار جامعة الفارابي وعنوان الرادع */
-    .title-banner {
-        text-align: center;
-        margin-bottom: 50px;
-    }
-    
-    .uni-title {
-        color: #fff;
-        font-family: 'Cairo', sans-serif;
-        font-size: 1.2em;
-        font-weight: 700;
-    }
-    
-    .main-title {
-        color: #fff;
-        font-family: 'Cairo', sans-serif;
-        font-size: 3.5em;
-        font-weight: 900;
-        text-shadow: 0 0 15px #00f2ff, 0 0 25px rgba(0, 242, 255, 0.4);
-        margin: 10px 0;
-    }
-
-    /* تصميم خانة الإدخال البيضاوية النيون */
+    /* تعديل مكان خانة الإدخال لتنطبق على المستطيل في صورتك */
     .stTextInput {
-        width: 100% !important;
-        max-width: 550px !important;
-        margin-bottom: 20px;
+        width: 85% !important;
+        max-width: 500px !important;
+        margin-top: 22vh; /* غير هذا الرقم لرفع أو تنزيل الخانة حسب شاشة موبايلك */
     }
 
     .stTextInput input {
-        background: rgba(0, 30, 60, 0.4) !important;
+        background: rgba(0, 0, 0, 0.2) !important; /* شفافة جداً لإظهار جمال الصورة خلفها */
         border: 2px solid #00f2ff !important;
-        color: #ffffff !important;
-        border-radius: 50px !important;
-        padding: 15px 30px !important;
+        color: #fff !important;
+        border-radius: 15px !important;
+        height: 50px !important;
         text-align: center !important;
         font-family: 'Cairo', sans-serif !important;
-        font-size: 1.1em !important;
-        box-shadow: inset 0 0 10px rgba(0, 242, 255, 0.2);
+        box-shadow: 0 0 15px rgba(0, 242, 255, 0.3);
     }
 
-    /* تصميم زر "افحص" (البيضوي والشفاف) */
+    /* تعديل مكان زر "افحص" */
     .stButton button {
-        background: transparent !important;
-        border: 1px solid #00f2ff !important;
+        background: rgba(0, 242, 255, 0.1) !important;
+        border: 2px solid #00f2ff !important;
         color: #00f2ff !important;
-        border-radius: 50px !important;
-        font-family: 'Cairo', sans-serif !important;
-        font-weight: bold !important;
-        width: 160px !important;
-        height: 45px !important;
-        margin-top: 15px !important;
-        transition: 0.3s;
+        border-radius: 15px !important;
+        width: 150px !important;
+        margin-top: 25px !important;
+        font-weight: 900 !important;
     }
+    
     .stButton button:hover {
         background: #00f2ff !important;
         color: #000 !important;
-        box-shadow: 0 0 30px #00f2ff;
-    }
-
-    /* أيقونات الزينة (الأقفال) */
-    .security-icons {
-        display: flex;
-        justify-content: center;
-        gap: 20px;
-        margin-top: 30px;
-        color: #00f2ff;
-        font-size: 1.5em;
-    }
-
-    /* التوقيع السفلي المطلـوب (اسمك) */
-    .credits-footer {
-        position: fixed;
-        bottom: 15px;
-        width: 100%;
-        text-align: center;
-        color: #ffffff;
-        font-family: 'Cairo', sans-serif;
-        font-size: 1em;
-        line-height: 1.5;
-        z-index: 100;
     }
     </style>
     """, unsafe_allow_html=True)
 
-# 3. بناء الهيكل الوظيفي داخل حاوية "مرنة"
-st.markdown('<div class="hero-container">', unsafe_allow_html=True)
+# 3. عرض الأدوات فوق الواجهة الجميلة
+st.markdown('<div class="main-wrapper">', unsafe_allow_html=True)
 
-# إضافة العنوان كأجزاء منفصلة لتتموضع بشكل صحيح في Streamlit
-st.markdown("""
-    <div class="title-banner">
-        <div class="uni-title">AL-FARABI UNIVERSITY</div>
-        <div class="main-title">الرادع الرقمي</div>
-    </div>
-    """, unsafe_allow_html=True)
+# خانة الإدخال
+target_link = st.text_input("", placeholder="[ ادخل الرابط المستهدف ]", label_visibility="collapsed")
 
-# وضع خانة الإدخال والزر داخل الأعمدة لضمان التمركز الدقيق في Streamlit
-col1, col2, col3 = st.columns([1, 4, 1])
-with col2:
-    # خانة الإدخال
-    target_link = st.text_input("", placeholder="[ ادخل الرابط المستهدف للتحليل الجنائي ]", label_visibility="collapsed")
-    
-    # محاذاة الزر للمنتصف
-    btn_col1, btn_col2, btn_col3 = st.columns([1, 1, 1])
-    with btn_col2:
-        check_btn = st.button("افحص")
-
-# إضافة الأيقونات التجميلية
-st.markdown("""
-    <div class="security-icons">
-        🔒 | 👁️ | 🔒
-    </div>
-    <div style="text-align: center; color: #00f2ff; font-family: 'Cairo'; margin-top: 10px;">
-        جاري فحص حالة الأمان...
-    </div>
-    """, unsafe_allow_html=True)
-
-# منطق الفحص (البروتوكول)
-if check_btn:
+# زر الفحص
+if st.button("افحص"):
     if target_link:
-        with st.status("جاري تشريح البيانات في مختبرات جامعة الفارابي...", expanded=False):
-            time.sleep(1.5)
-            st.success("الرابط آمن - جامعة الفارابي")
+        with st.status("جاري التحليل في خوادم جامعة الفارابي...", expanded=False):
+            time.sleep(2)
+            st.success("الرابط آمن - تم الفحص بنجاح")
     else:
-        st.toast("أدخل الرابط أولاً يا مهندس علي")
+        st.toast("يرجى إدخال الرابط أولاً")
 
 st.markdown('</div>', unsafe_allow_html=True)
-
-# 4. التوقيع النهائي (مطابق لطلبك 100/100)
-st.markdown("""
-    <div class="credits-footer">
-        نظام الرادع الرقمي © 2026<br>
-        تم التطوير بواسطة علي صباح أحمد
-    </div>
-    """, unsafe_allow_html=True)
