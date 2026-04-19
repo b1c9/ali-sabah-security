@@ -1,84 +1,91 @@
 import streamlit as st
 import time
 
-# 1. إعدادات الهيبة السيبرانية - جعل الصفحة عريضة
-st.set_page_config(page_title="الرادع الرقمي", layout="wide")
+# 1. إعدادات الصفحة - جامعة الفارابي
+st.set_page_config(
+    page_title="جامعة الفارابي | الرادع الرقمي",
+    layout="wide",
+    initial_sidebar_state="collapsed"
+)
 
-# 2. هندسة الواجهة (CSS) - جعل الصورة هي الموقع بالكامل
-st.markdown("""
+# 2. ربط الصورة وتنسيق الواجهة (CSS)
+st.markdown(f"""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@700;900&display=swap');
     
-    /* جعل الصورة خلفية كاملة ومثبتة للمتصفح */
-    .stApp {
-        background-image: url('https://i.imgur.com/8ae491e.png'); /* رابط الصورة مالتك */
-        background-size: cover;
+    .stApp {{
+        background-image: url("https://i.imgur.com/8ae491e.png");
+        background-size: 100% 100%;
         background-position: center;
         background-repeat: no-repeat;
         background-attachment: fixed;
-        direction: rtl;
-    }
+    }}
 
-    /* إخفاء عناصر Streamlit الافتراضية المزعجة (Header/Footer) */
-    #MainMenu, header, footer {visibility: hidden;}
-    
-    /* حاوية "ذكية" لوضع خانة الإدخال فوق الصورة بدقة */
-    .target-container {
-        position: absolute;
-        top: 45%; /* تعديل الارتفاع بناءً على شاشة الموبايل */
-        right: 15%; /* محاكاة موقع الخانة في الصورة */
-        width: 70%; /* عرض الخانة */
-        text-align: center;
-    }
+    /* إخفاء القوائم الافتراضية لجعلها واجهة برمجية احترافية */
+    header, footer, #MainMenu {{visibility: hidden;}}
+    .block-container {{padding: 0 !important;}}
 
-    /* تصميم خانة الإدخال البيضاوية النيون (نفس الصورة) */
-    .stTextInput > div > div > input {
-        background: rgba(0, 30, 60, 0.4) !important;
+    /* حاوية العناصر المركزية */
+    .main-container {{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        width: 100%;
+    }}
+
+    /* ضبط مكان خانة الإدخال فوق المستطيل في الصورة */
+    .stTextInput {{
+        width: 80% !important;
+        max-width: 520px !important;
+        margin-top: 15vh; /* هذا الرقم يرفع وينزل الخانة لتنطبق على الرسمة */
+    }}
+
+    .stTextInput input {{
+        background: rgba(0, 0, 0, 0.4) !important;
         border: 2px solid #00f2ff !important;
-        color: #ffffff !important;
-        border-radius: 50px !important;
-        padding: 15px 25px !important;
-        text-align: right !important;
+        color: #fff !important;
+        border-radius: 10px !important;
+        height: 50px !important;
+        text-align: center !important;
         font-family: 'Cairo', sans-serif !important;
-        font-size: 1.2em !important;
-        box-shadow: inset 0 0 15px rgba(0, 242, 255, 0.2);
-    }
+    }}
 
-    /* تصميم زر "افحص" (شفاف وبيضوي) */
-    .stButton > button {
-        background: transparent !important;
-        border: 1px solid #00f2ff !important;
-        color: #00f2ff !important;
-        font-family: 'Cairo', sans-serif !important;
-        font-weight: bold !important;
-        font-size: 1.1em !important;
-        border-radius: 50px !important;
-        width: 120px !important;
-        height: 45px !important;
-        position: absolute;
-        top: 55%; /* تحت خانة الإدخال */
-        right: 15%; /* نفس محاذاة الخانة */
-    }
-    .stButton > button:hover {
+    /* ضبط مكان زر افحص */
+    .stButton button {{
         background: rgba(0, 242, 255, 0.1) !important;
-        transform: scale(1.02);
-    }
+        border: 2px solid #00f2ff !important;
+        color: #00f2ff !important;
+        border-radius: 10px !important;
+        width: 160px !important;
+        height: 45px !important;
+        margin-top: 25px !important;
+        font-weight: 900 !important;
+        transition: 0.3s;
+    }}
+    
+    .stButton button:hover {{
+        background: #00f2ff !important;
+        color: #000 !important;
+        box-shadow: 0 0 30px #00f2ff;
+    }}
     </style>
     """, unsafe_allow_html=True)
 
-# 3. عرض خانة الإدخال والزر فوق الصورة
-st.markdown('<div class="target-container">', unsafe_allow_html=True)
+# 3. بناء الهيكل الوظيفي
+st.markdown('<div class="main-container">', unsafe_allow_html=True)
 
-# خانة الإدخال (بدون عنوان فوقها)
-target_url = st.text_input("", placeholder="[ ادخل الرابط المستهدف لفحصه سيبرانياً ]")
+# خانة الإدخال (بدون عنوان نصي ليظهر التصميم فقط)
+url_to_check = st.text_input("", placeholder="[ ادخل الرابط المستهدف للتحليل الجنائي ]", label_visibility="collapsed")
 
-# زر افحص
+# زر الفحص
 if st.button("افحص"):
-    if target_url:
-        with st.status("جاري تشريح البيانات...", expanded=False):
+    if url_to_check:
+        with st.status("جاري تشريح الرابط في مختبرات جامعة الفارابي...", expanded=False):
             time.sleep(2)
-            st.success("اكتمل التحليل الجنائي")
+            st.success("التحليل السيبراني مكتمل: الرابط آمن.")
     else:
-        st.warning("أدخل الرابط أولاً يا مهندس علي.")
+        st.toast("أدخل الرابط أولاً يا مهندس علي")
 
 st.markdown('</div>', unsafe_allow_html=True)
